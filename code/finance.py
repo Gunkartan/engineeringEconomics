@@ -9,7 +9,9 @@ class Finance:
         return npf.irr(cash_flows)
     
     def irr_annually(self, irr_quarterly: float) -> float:
-        return (1 + irr_quarterly) ** 4 - 1
+        m = 4
+
+        return m * ((1 + irr_quarterly) ** (1 / m) - 1)
     
     def payback_period(self, cumulative_cash: list[int]) -> int:
         payback_quarter = np.argmax(cumulative_cash >= 0)
@@ -29,8 +31,8 @@ class Finance:
 
 if __name__ == '__main__':
     initial_investment = -2000
-    free_cash_flows = [-1326, 288, 955, 2321, -482, 610, 669, 1500, -877, -847, 790]
-    cash_flows = [initial_investment] + free_cash_flows
+    net_cash_flows = [-1326, 288, 955, 2321, -482, 610, 669, 1500, -877, -847, 790]
+    cash_flows = [initial_investment] + net_cash_flows
     annual_rate = 0.1
     quarterly_rate = annual_rate / 4
     cumulative_cash = np.cumsum(cash_flows)
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     payback_quarter = finance.payback_period(cumulative_cash)
     payback_fractional = finance.fractional_payback(cumulative_cash, payback_quarter, cash_flows)
     print(f'The NPV is {npv:.3f} million USD.')
-    print(f'The quarterly IRR is {irr_quarterly:.3f}')
-    print(f'The annual IRR is {irr_annually:.3f}')
+    print(f'The quarterly IRR is {irr_quarterly:.3f}.')
+    print(f'The annual IRR is {irr_annually:.3f}.')
     print(f'The payback period is {payback_quarter} quarters.')
     print(f'The fractional payback period is {payback_fractional:.3f} quarters.')
