@@ -9,9 +9,7 @@ class Finance:
         return npf.irr(cash_flows)
     
     def irr_annually(self, irr_quarterly: float) -> float:
-        m = 4
-
-        return m * ((1 + irr_quarterly) ** (1 / m) - 1)
+        return (1 + irr_quarterly) ** 4 - 1
     
     def payback_period(self, cumulative_cash: list[int]) -> int:
         payback_quarter = np.argmax(cumulative_cash >= 0)
